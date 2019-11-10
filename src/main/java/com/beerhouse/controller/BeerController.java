@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.beerhouse.model.Beer;
 import com.beerhouse.service.BeerService;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @RequestMapping("/")
+@Api(value = "Controller")
 public class BeerController {
 	
 
