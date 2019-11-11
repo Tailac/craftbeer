@@ -10,21 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class ExceptionHandlerControllerAdvice {
+public class ExceptionHandlerControllerAdvice extends RuntimeException{
 
 	@ExceptionHandler(NonExistentObjectException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public @ResponseBody ExceptionResponse handleResourceNotFound(final ResourceNotFoundException exception,
-			final HttpServletRequest request) {
-
-		ExceptionResponse error = new ExceptionResponse(exception.getMessage());
-
-		return error;
-	}
-
-	@ExceptionHandler(ExistentObjectException.class)
-	@ResponseStatus(value = HttpStatus.CONFLICT)
-	public @ResponseBody ExceptionResponse handleResourceConfit(final ResourceNotFoundException exception,
 			final HttpServletRequest request) {
 
 		ExceptionResponse error = new ExceptionResponse(exception.getMessage());

@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.beerhouse.exception.NonExistentObjectException;
 import com.beerhouse.model.Beer;
 import com.beerhouse.templates.BeerTemplate;
 
@@ -27,6 +30,9 @@ public class BeerServiceTest {
 
 	@Autowired
 	private BeerService beerService;
+
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 
 	@Before
 	public void setup() {
@@ -89,6 +95,26 @@ public class BeerServiceTest {
 		Beer beerUpdated = beerService.updateBeer(findFirst.get().getId(), newBeer);
 
 		assertThat(beerUpdated).isEqualToComparingFieldByFieldRecursively(beerUpdated);
+
+	}
+
+	@Test
+	public void shouldDeleteBeerWithErrorNotFound() {
+
+		expectedException.expect(NonExistentObjectException.class);
+		expectedException.expectMessage("Beer not found!");
+
+		beerService.deleteBeer(0);
+
+	}
+
+	@Test
+	public void shouldUpdateBeerWithErrorNotFound() {
+
+		expectedException.expect(NonExistentObjectException.class);
+		expectedException.expectMessage("Beer not found!");
+
+		beerService.updateBeer(0, new Beer());
 
 	}
 
